@@ -31,5 +31,17 @@ android:padding="@dimen/activity_horizontal_margin">
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 
+    <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="165dp"
+        android:text="Add friends"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
 
 </RelativeLayout>
