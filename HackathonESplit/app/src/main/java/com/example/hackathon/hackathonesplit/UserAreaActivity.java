@@ -30,6 +30,19 @@ public class UserAreaActivity extends AppCompatActivity {
         TextView tvWelcomeMsg = (TextView) findViewById(R.id.tvWelcomeMsg);
         //final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         //EditText etAge = (EditText) findViewById(R.id.etAge);
+        final Button bcreatelistfriend = (Button) findViewById(R.id.bcreatelistfriend);
+        bcreatelistfriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(UserAreaActivity.this, DisplayFriendlistActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("name", name);
+                intent.putExtra("age", age);
+                UserAreaActivity.this.startActivity(intent);
+            }
+        });
         final Button bListItem = (Button) findViewById(R.id.blist_item);
 
         // Display user details

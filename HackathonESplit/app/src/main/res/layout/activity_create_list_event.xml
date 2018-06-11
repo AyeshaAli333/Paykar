@@ -19,7 +19,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:text="Create New Event"
+        android:text="Create New Group"
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 
@@ -33,7 +33,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/bcreateevent"
-        android:text="List Event"
+        android:text="List Group"
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 

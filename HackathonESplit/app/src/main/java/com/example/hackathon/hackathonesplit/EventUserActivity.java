@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.content.ContentValues.TAG;
 
 public class EventUserActivity extends AppCompatActivity {
 
@@ -33,7 +36,7 @@ public class EventUserActivity extends AppCompatActivity {
         final String amount = intent.getStringExtra("amount");
         final String dateofcreation = intent.getStringExtra("dateofcreation");
 
-        count = 0;
+        count = 1;
         // Display user details
         final EditText etusernameadd = (EditText) findViewById(R.id.etusernameadd);
         final Button bcreateandadduserevent = (Button) findViewById(R.id.bcreateandadduserevent);
@@ -42,7 +45,8 @@ public class EventUserActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final String username = etusernameadd.getText().toString();
-
+                final String shareamount = String.valueOf(Double.parseDouble(amount)/count);
+                Log.d(TAG, "ShareAmount: " + shareamount);
                 // Response received from the server
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -52,12 +56,13 @@ public class EventUserActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
-                                count++;
+
                                 AlertDialog.Builder builder = new AlertDialog.Builder(EventUserActivity.this);
                                 builder.setMessage(count+" User Added To Event"+eventname)
                                         .setNegativeButton("Add More", null)
                                         .create()
                                         .show();
+                                count++;
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(EventUserActivity.this);
                                 builder.setMessage("User Not Present in System")
@@ -72,7 +77,7 @@ public class EventUserActivity extends AppCompatActivity {
                     }
                 };
 
-                EventUserRequest eventuserRequest = new EventUserRequest(String.valueOf(eventid), username, amount, amount, amount, dateofcreation, eventname, responseListener);
+                EventUserRequest eventuserRequest = new EventUserRequest(String.valueOf(eventid), username, amount, shareamount, shareamount, dateofcreation, eventname, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(EventUserActivity.this);
                 queue.add(eventuserRequest);
             }
@@ -82,13 +87,13 @@ public class EventUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(EventUserActivity.this, InitialUpdateActivity.class);
+                Intent intent = new Intent(EventUserActivity.this, EventViewActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("name", name);
                 intent.putExtra("age", age);
-                intent.putExtra("count", count);
-                intent.putExtra("amount", amount);
-                intent.putExtra("eventid", eventid);
+                intent.putExtra("eventid",String.valueOf(eventid));
+                intent.putExtra("eventdesc", eventname+" Rs"+amount);
+                Log.d(TAG, "eventid: " + eventid);
                 EventUserActivity.this.startActivity(intent);
             }
         });

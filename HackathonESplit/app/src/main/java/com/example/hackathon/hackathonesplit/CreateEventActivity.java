@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +33,8 @@ public class CreateEventActivity extends AppCompatActivity {
         final EditText etEventname = (EditText) findViewById(R.id.etEventname);
         final EditText etDescription = (EditText) findViewById(R.id.etDescription);
         final EditText etamount = (EditText) findViewById(R.id.etamount);
+        final RadioGroup radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
+
         // Display user details
         final Button bcreateandadduser = (Button) findViewById(R.id.bcreateandadduser);
         bcreateandadduser.setOnClickListener(new View.OnClickListener() {
@@ -39,44 +44,69 @@ public class CreateEventActivity extends AppCompatActivity {
                 final String eventname = etEventname.getText().toString();
                 final String description = etDescription.getText().toString();
                 final String amount = etamount.getText().toString();
-                // Response received from the server
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
 
-                            if (success) {
-                                int eventid = jsonResponse.getInt("eventid");
-                                String dateofcreation = jsonResponse.getString("dateofcreation");
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                final RadioButton calradioButton = (RadioButton) findViewById(selectedId);
+                if(selectedId==-1){
+                    Toast.makeText(CreateEventActivity.this,"Calculation Method not Selected", Toast.LENGTH_SHORT).show();
+                }
+                else {
 
-                                Intent intent = new Intent(CreateEventActivity.this, EventUserActivity.class);
-                                intent.putExtra("name", name);
-                                intent.putExtra("username", username);
-                                intent.putExtra("eventid", eventid);
-                                intent.putExtra("eventname", eventname);
-                                intent.putExtra("age", age);
-                                intent.putExtra("amount", amount);
-                                intent.putExtra("dateofcreation", dateofcreation);
-                                CreateEventActivity.this.startActivity(intent);
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventActivity.this);
-                                builder.setMessage("Group Creation Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success");
+
+                                    if (success) {
+                                        int eventid = jsonResponse.getInt("eventid");
+                                        String dateofcreation = jsonResponse.getString("dateofcreation");
+
+                                        String caltext = (String)calradioButton.getText();
+
+                                        // Response received from the server
+                                        if(new String("Equal").equals(caltext)) {
+                                            Intent intent = new Intent(CreateEventActivity.this, EventUserActivity.class);
+                                            intent.putExtra("name", name);
+                                            intent.putExtra("username", username);
+                                            intent.putExtra("eventid", eventid);
+                                            intent.putExtra("eventname", eventname);
+                                            intent.putExtra("age", age);
+                                            intent.putExtra("amount", amount);
+                                            intent.putExtra("dateofcreation", dateofcreation);
+                                            CreateEventActivity.this.startActivity(intent);
+                                        }
+                                        else{
+                                            Intent intent = new Intent(CreateEventActivity.this, EventUserPerActivity.class);
+                                            intent.putExtra("name", name);
+                                            intent.putExtra("username", username);
+                                            intent.putExtra("eventid", eventid);
+                                            intent.putExtra("eventname", eventname);
+                                            intent.putExtra("age", age);
+                                            intent.putExtra("amount", amount);
+                                            intent.putExtra("dateofcreation", dateofcreation);
+                                            CreateEventActivity.this.startActivity(intent);
+                                        }
+                                    } else {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventActivity.this);
+                                        builder.setMessage("Group Creation Failed")
+                                                .setNegativeButton("Retry", null)
+                                                .create()
+                                                .show();
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        };
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
+                        CreateEventRequest createeventRequest = new CreateEventRequest(eventname, description, username, amount, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(CreateEventActivity.this);
+                        queue.add(createeventRequest);
 
-                CreateEventRequest createeventRequest = new CreateEventRequest(eventname, description, username, amount, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(CreateEventActivity.this);
-                queue.add(createeventRequest);
+                }
             }
         });
     }

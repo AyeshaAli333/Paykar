@@ -21,7 +21,7 @@ public class EventUserPerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_user);
+        setContentView(R.layout.activity_event_user_per);
 
         Intent intent = getIntent();
 
@@ -43,7 +43,8 @@ public class EventUserPerActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final String username = etusernameadd.getText().toString();
-
+                final String userper = etuserper.getText().toString();
+                final String shareamount = String.valueOf((Double.parseDouble(amount)*Double.parseDouble(userper))/100.0);
                 // Response received from the server
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -73,9 +74,9 @@ public class EventUserPerActivity extends AppCompatActivity {
                     }
                 };
 
-                EventUserRequest eventuserRequest = new EventUserRequest(String.valueOf(eventid), username, amount, amount, amount, dateofcreation, eventname, responseListener);
+                EventUserPerRequest eventuserperRequest = new EventUserPerRequest(String.valueOf(eventid), username, amount, shareamount, shareamount, dateofcreation, eventname, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(EventUserPerActivity.this);
-                queue.add(eventuserRequest);
+                queue.add(eventuserperRequest);
             }
         });
         final Button bcalnotification = (Button) findViewById(R.id.bcalnotification);
@@ -83,13 +84,12 @@ public class EventUserPerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(EventUserPerActivity.this, InitialUpdateActivity.class);
+                Intent intent = new Intent(EventUserPerActivity.this, EventViewActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("name", name);
                 intent.putExtra("age", age);
-                intent.putExtra("count", count);
-                intent.putExtra("amount", amount);
-                intent.putExtra("eventid", eventid);
+                intent.putExtra("eventid",String.valueOf(eventid));
+                intent.putExtra("eventdesc", eventname+" Rs"+amount);
                 EventUserPerActivity.this.startActivity(intent);
             }
         });

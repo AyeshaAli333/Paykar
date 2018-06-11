@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EventUserPerRequest extends StringRequest {
-    private static final String LOGIN_REQUEST_URL = "http://104.154.204.10/hackathon/adduserevent.php";
+    private static final String LOGIN_REQUEST_URL = "http://104.154.204.10/hackathon/addusereventper.php";
     private Map<String, String> params;
 
     public EventUserPerRequest(String eventid, String username, String amount, String shareamount, String due, String dateofcreation, String eventname,  Response.Listener<String> listener) {

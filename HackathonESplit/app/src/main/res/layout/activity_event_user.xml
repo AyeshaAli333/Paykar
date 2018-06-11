@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/tvadduserevent"
-        android:layout_width="wrap_content"
+        android:layout_width="306dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Add User to Group"
@@ -51,10 +51,10 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="384dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="212dp"
-        android:text="Split and Notify"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="173dp"
+        android:text="View Event"
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 
