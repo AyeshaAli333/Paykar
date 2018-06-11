@@ -8,11 +8,6 @@
     $due = $_POST["due"];
     $dateofcreation = $_POST["dateofcreation"];
     $eventname = $_POST["eventname"];
-
-    $statement = mysqli_prepare($con, "UPDATE eventref SET shareamount = ?, due = ? where eventid = ?");
-    mysqli_stmt_bind_param($statement, "ddi", $shareamount, $due, $eventid);
-    mysqli_stmt_execute($statement);
-
     $statement = mysqli_prepare($con, "INSERT INTO eventref (eventid,eventname, username, amount, shareamount,due,dateofcreation) VALUES (?,?,?,?, ?, ?, ?)");
     mysqli_stmt_bind_param($statement, "issddds", $eventid, $eventname, $username, $amount, $shareamount, $due,$dateofcreation);
     mysqli_stmt_execute($statement);

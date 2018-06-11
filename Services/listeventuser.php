@@ -1,11 +1,11 @@
 <?php
     $con = mysqli_connect("localhost", "root", "Cyac-hs8yvxAGN", "hackathon");
     
-    $username = $_POST["username"];
+    $eventid = $_POST["eventid"];
 
 
-    $statement = mysqli_prepare($con, "SELECT * FROM eventref WHERE username = ?");
-    mysqli_stmt_bind_param($statement, "s", $username);
+    $statement = mysqli_prepare($con, "SELECT * FROM eventref WHERE eventid = ?");
+    mysqli_stmt_bind_param($statement, "i", $eventid);
     mysqli_stmt_execute($statement);
     
     mysqli_stmt_store_result($statement);
@@ -15,7 +15,7 @@
    $response["success"] = false; 
     while(mysqli_stmt_fetch($statement)){  
         $temp = array();
-        $response[$eventid] = strtoupper($eventname)."  Rs:".$amount;
+        $response[$username] = strtoupper($username)."  Share Rs:".$shareamount." Due Rs:".$due;
         $response["success"] = true;
     }
     echo json_encode($response);              
